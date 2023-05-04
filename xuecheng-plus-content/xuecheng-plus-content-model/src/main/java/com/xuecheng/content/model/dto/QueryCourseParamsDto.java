@@ -14,7 +14,7 @@ public class QueryCourseParamsDto {
     private String auditStatus;
     //课程状态
     private String courseName;
-
+    //发布状态
     private String publishStatus;
 
 }

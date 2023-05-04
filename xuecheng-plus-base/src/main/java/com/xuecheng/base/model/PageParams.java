@@ -21,5 +21,5 @@ import lombok.ToString;
 public class PageParams {
     private Long pageNo=1L;
 
-    private Long PageSize=10L;
+    private Long pageSize=10L;
 }
