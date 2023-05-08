@@ -20,7 +20,10 @@ public class CourseCategoryController {
     @Autowired
     CourseCategoryService courseCategoryService;
 
-
+    //写接口的步骤
+    //1.确定请求方式，使用restful规范
+    //2.根据业务需求，写好sql并确定DTO，前后端输入输出的参数规定好，可以使用swagger文档
+    //3.编写service
     @GetMapping("/course-category/tree-nodes")
     public List<CourseCategoryTreeDto> queryTreeNodes() {
         return courseCategoryService.queryTreeNodes("1");

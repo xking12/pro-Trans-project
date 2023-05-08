@@ -18,6 +18,7 @@
         id, name, label, parentid, is_show, orderby, is_leaf
     </sql>
 
+<!--List<CourseCategoryTreeDto> selectTreeNodes(String id)-->
     <select id="selectTreeNodes"  parameterType="string" resultType="com.xuecheng.content.model.dto.CourseCategoryTreeDto">
         with recursive t1 as (
             select * from course_category where id=#{id}
@@ -27,7 +28,6 @@
         )
         select * from t1
         order by t1.id
-
     </select>
 
 </mapper>
