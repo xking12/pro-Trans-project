@@ -33,7 +33,7 @@ public class CourseBaseInfoController {
         PageResult<CourseBase> pageResult = courseBaseInfoService.queryCourseBaseList(pageParams, queryCourseParamsDto);
         return  pageResult;
     }
-    @ApiOperation("新增课程")
+    @ApiOperation("新增课程1")
     @PostMapping("/course")
     public CourseBaseInfoDto createCourseBase(@RequestBody AddCourseDto addCourseDto){
         //获取到用户所属机构的id
