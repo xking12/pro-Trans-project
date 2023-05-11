@@ -33,3 +33,13 @@ Content-Type: application/json
   "grade": "204001",
   "description": "java网络编程高级java网络编程高级java网络编程高级"
 }
+
+### 上传文件
+POST {{media_host}}/media/upload/coursefile
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="filedata"; filename="1.jpg"
+Content-Type: application/octet-stream
+
+< D:\reggiePhotos\1.jpg
