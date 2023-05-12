@@ -47,7 +47,7 @@ public class MediaFilesController {
      * @param filedata
      * @return
      */
-    @ApiOperation("上传文件")
+    @ApiOperation("上传图片")
     @RequestMapping(value = "/upload/coursefile",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public UploadFileResultDto upload(@RequestPart("filedata")MultipartFile filedata) throws IOException {
