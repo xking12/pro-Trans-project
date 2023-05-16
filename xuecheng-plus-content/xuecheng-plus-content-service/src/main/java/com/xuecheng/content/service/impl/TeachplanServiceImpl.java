@@ -88,7 +88,7 @@ public class TeachplanServiceImpl implements TeachplanService {
         //如果课程已经绑定了媒资，则删除它
         Long courseId = teachplan.getCourseId();
         LambdaQueryWrapper<TeachplanMedia> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(TeachplanMedia::getCourseId,courseId);
+        queryWrapper.eq(TeachplanMedia::getTeachplanId,teachplanId);
         teachplanMediaMapper.delete(queryWrapper);
         //再添加教学计划与媒资的绑定关系
         TeachplanMedia teachplanMedia = new TeachplanMedia();

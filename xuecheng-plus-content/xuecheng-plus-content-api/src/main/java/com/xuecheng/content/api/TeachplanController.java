@@ -47,7 +47,7 @@ public class TeachplanController {
         teachplanService.associationMedia(bindTeachplanMediaDto);
     }
 
-    //TODO:@ApiOperation(value = "接触课程计划和媒资信息绑定")
+    //TODO:@ApiOperation(value = "解除课程计划和媒资信息绑定")
 
 
     //TODO:@ApiOperation(value = "删除小结和删除本章")
