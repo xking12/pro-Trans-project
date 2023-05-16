@@ -9,10 +9,12 @@ import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.base.model.RestResponse;
 import com.xuecheng.media.mapper.MediaFilesMapper;
+import com.xuecheng.media.mapper.MediaProcessMapper;
 import com.xuecheng.media.model.dto.QueryMediaParamsDto;
 import com.xuecheng.media.model.dto.UploadFileParamsDto;
 import com.xuecheng.media.model.dto.UploadFileResultDto;
 import com.xuecheng.media.model.po.MediaFiles;
+import com.xuecheng.media.model.po.MediaProcess;
 import com.xuecheng.media.service.MediaFileService;
 import io.minio.*;
 import io.minio.messages.DeleteError;
@@ -47,6 +49,8 @@ import java.util.stream.Stream;
 @Slf4j
 public class MediaFileServiceImpl implements MediaFileService {
 
+ @Autowired
+ MediaProcessMapper mediaProcessMapper;
  @Autowired
  MediaFilesMapper mediaFilesMapper;
 
@@ -311,7 +315,7 @@ public class MediaFileServiceImpl implements MediaFileService {
   * @param objectName
   * @return
   */
- private File downloadFileFromMinIO(String bucketVideo, String objectName) {
+ public File downloadFileFromMinIO(String bucketVideo, String objectName) {
   //临时文件
   File tempFile = null;
   FileOutputStream outputStream = null;
@@ -392,9 +396,27 @@ public class MediaFileServiceImpl implements MediaFileService {
     log.error("保存文件信息到数据库失败,{}",mediaFiles.toString());
     throw new XueChengPlusException("保存文件信息失败");
    }
+   //添加到待处理任务表
+   addWaitingTask(mediaFiles);
    log.debug("保存文件信息到数据库成功,{}",mediaFiles.toString());
   }
   return mediaFiles;
+ }
+
+ private void addWaitingTask(MediaFiles mediaFiles) {
+  //文件名称
+  String filename = mediaFiles.getFilename();
+  //文件扩展名
+  String extension=filename.substring(filename.lastIndexOf("."));
+  //mimeType
+  String mimeType = getMimeType(extension);
+  if(mimeType.equals("video/x-msvideo")){
+   MediaProcess mediaProcess = new MediaProcess();
+   BeanUtils.copyProperties(mediaFiles,mediaProcess);
+   mediaProcess.setStatus("1");//未处理
+   mediaProcess.setFailCount(0);//失败次数默认为0
+   mediaProcessMapper.insert(mediaProcess);
+  }
  }
 
 
