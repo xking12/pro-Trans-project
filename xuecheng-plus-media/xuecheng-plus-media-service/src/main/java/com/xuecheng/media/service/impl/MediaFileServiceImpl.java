@@ -22,6 +22,7 @@ import io.minio.messages.DeleteObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -103,14 +104,15 @@ public class MediaFileServiceImpl implements MediaFileService {
  }
 
  /**
-  * 上传图片
-  * @param companyId           机构id
+  *
+  * @param companyId 机构id
   * @param uploadFileParamsDto 上传文件信息
-  * @param localFilePath       文件磁盘路径
-  * @return UploadFileResultDto
+  * @param localFilePath 文件磁盘路径
+  * @param objectName  如果传入了objectName就按照objectName的目录去存储，否则按照年月日存储
+  * @return
   */
  @Override
- public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath) {
+ public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath,String objectName) {
   File file = new File(localFilePath);
   if (!file.exists()) {
    throw new XueChengPlusException("文件不存在！");
@@ -126,7 +128,10 @@ public class MediaFileServiceImpl implements MediaFileService {
   //文件的默认目录
   String defaultFolderPath = getDefaultFolderPath();
   //存储到minio中的对象名(带目录)
-  String  objectName = defaultFolderPath + fileMd5 + exension;
+  if(StringUtils.isEmpty(objectName)){
+    objectName = defaultFolderPath + fileMd5 + exension;
+  }
+
   String bucket_files=bucket_mediafiles;
   //将文件上传到minio
   boolean b = addMediaFilesToMinIO(localFilePath, mimeType, bucket_files, objectName);
